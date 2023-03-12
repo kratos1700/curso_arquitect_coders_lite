@@ -1,11 +1,12 @@
-package com.example.mynotes
+package com.example.mynotes.detail
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
+import com.example.mynotes.Note
+import com.example.mynotes.NotesApplication
 import com.example.mynotes.databinding.ActivityDetailBinding
-import com.example.mynotes.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
 
 class DetailActivity : AppCompatActivity() {
@@ -48,7 +49,8 @@ class DetailActivity : AppCompatActivity() {
                                 )
                             )
                         } else {
-                            database.notesDao().insert(Note(0,title = title, description = descripcion)
+                            database.notesDao().insert(
+                                Note(0,title = title, description = descripcion)
                             )
                         }
                         finish()

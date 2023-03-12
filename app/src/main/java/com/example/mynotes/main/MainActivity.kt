@@ -1,10 +1,12 @@
-package com.example.mynotes
+package com.example.mynotes.main
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
+import com.example.mynotes.NotesApplication
+import com.example.mynotes.NotesDatabase
 import com.example.mynotes.databinding.ActivityMainBinding
+import com.example.mynotes.detail.DetailActivity
 import kotlinx.coroutines.launch
 
 lateinit var binding: ActivityMainBinding

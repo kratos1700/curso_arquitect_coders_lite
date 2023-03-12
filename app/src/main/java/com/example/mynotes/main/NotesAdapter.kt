@@ -1,4 +1,4 @@
-package com.example.mynotes
+package com.example.mynotes.main
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mynotes.Note
+import com.example.mynotes.R
 import com.example.mynotes.databinding.NoteItemBinding
 
 class NotesAdapter(
@@ -38,7 +40,7 @@ class NoteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     val binding = NoteItemBinding.bind(view)
 
-    fun bind(note: Note,  onNoteClick: (Note) -> Unit, onNoteDelete: (Note) -> Unit) {
+    fun bind(note: Note, onNoteClick: (Note) -> Unit, onNoteDelete: (Note) -> Unit) {
         binding.title.text = note.title
         binding.root.setOnClickListener { onNoteClick(note) }
         binding.btDelete.setOnClickListener { onNoteDelete(note) }
