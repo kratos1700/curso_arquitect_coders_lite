@@ -1,7 +1,7 @@
 package com.example.mynotes
 
 import androidx.room.*
-
+@Database(entities = [Note::class], version = 1, exportSchema = false)
 abstract class NotesDatabase :RoomDatabase(){
     abstract fun notesDao():NoteDao
 }
