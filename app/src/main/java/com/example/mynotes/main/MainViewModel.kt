@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.mynotes.Note
 import com.example.mynotes.NotesDatabase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 // pasamos por parametro el NotesDatabase
@@ -13,8 +15,8 @@ class MainViewModel(private val db:NotesDatabase) : ViewModel() {
 
     //necesitamos un estado que represente el estado del UI,
     // si se cambia lo representa
-    private val _state = MutableLiveData<List<Note>>()
-    val state : MutableLiveData<List<Note>> = _state
+    private val _state = MutableStateFlow<List<Note>>(emptyList())
+    val state : StateFlow<List<Note>> = _state
 
 
     fun onResume() {

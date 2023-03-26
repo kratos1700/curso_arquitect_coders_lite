@@ -3,7 +3,9 @@ package com.example.mynotes.main
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.mynotes.NotesApplication
 import com.example.mynotes.NotesDatabase
 import com.example.mynotes.databinding.ActivityMainBinding
@@ -42,8 +44,13 @@ class MainActivity : AppCompatActivity() {
                 DetailActivity.navigate(this@MainActivity)
             }
             //observamos los cambios del estado
-            vm.state.observe(this@MainActivity){
-                notesAdapter.submitList(it)
+            lifecycleScope.launch{
+                // para evitar errores especificar cuendo se tiene que suscribir para recuperar datos
+                repeatOnLifecycle(Lifecycle.State.STARTED){
+                    vm.state.collect{
+                        notesAdapter.submitList(it)
+                    }
+                }
             }
         }
 
