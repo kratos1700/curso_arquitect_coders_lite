@@ -58,7 +58,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        vm.onResume()
+        // anulado por la modificacion del DAO por el FLOW
+    //    vm.onResume()
 
     }
 

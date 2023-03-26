@@ -1,6 +1,9 @@
 package com.example.mynotes
 
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
+
+
 @Database(entities = [Note::class], version = 1, exportSchema = false)
 abstract class NotesDatabase :RoomDatabase(){
     abstract fun notesDao():NoteDao
@@ -8,9 +11,12 @@ abstract class NotesDatabase :RoomDatabase(){
 
 @Dao
 interface NoteDao{
+    //modificado para optimizar con flows
+    /*
     @Query("SELECT * FROM note")
-    suspend fun getAll() : List<Note>
-
+    suspend fun getAll() : List<Note> */
+    @Query("SELECT * FROM note")
+     fun getAll() : Flow<List<Note>>
     @Query("SELECT * FROM note WHERE id = :id")
     suspend fun getById(id:Int) : Note
 

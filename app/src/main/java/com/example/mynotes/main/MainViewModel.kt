@@ -11,33 +11,35 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 // pasamos por parametro el NotesDatabase
-class MainViewModel(private val db:NotesDatabase) : ViewModel() {
+class MainViewModel(private val db: NotesDatabase) : ViewModel() {
 
     //necesitamos un estado que represente el estado del UI,
     // si se cambia lo representa
-    private val _state = MutableStateFlow<List<Note>>(emptyList())
-    val state : StateFlow<List<Note>> = _state
+    // private val _state = MutableStateFlow<List<Note>>(emptyList())
+    //val state : StateFlow<List<Note>> = _state
+    val state = db.notesDao().getAll()
 
-
+    /*
+    anulado por que recuperamos to do directamente del DAO
     fun onResume() {
         viewModelScope.launch {
-           _state.value = db.notesDao().getAll()
+            _state.value = db.notesDao().getAll()
         }
     }
-
+*/
     fun onNoteDelete(nota: Note) {
         viewModelScope.launch {
-        //eliminamos nota
+            //eliminamos nota
             db.notesDao().delete(nota)
             //actualizamos el estado con las notas actuales
-            _state.value= db.notesDao().getAll()
+          //  _state.value = db.notesDao().getAll() no hace falta actualizar por la modificacion del DAO
         }
     }
 
 }
 
 @Suppress("UNCHECKED_CAST")
-class MainViewModelFactory(private val db:NotesDatabase): ViewModelProvider.Factory{
+class MainViewModelFactory(private val db: NotesDatabase) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return MainViewModel(db) as T
     }
