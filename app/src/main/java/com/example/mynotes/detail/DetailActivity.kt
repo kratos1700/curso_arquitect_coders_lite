@@ -3,13 +3,24 @@ package com.example.mynotes.detail
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.mynotes.Note
 import com.example.mynotes.NotesApplication
 import com.example.mynotes.databinding.ActivityDetailBinding
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class DetailActivity : AppCompatActivity() {
+
+    private val vm: DetailViewModel by viewModels {
+        val database = (application as NotesApplication).notesDatabase
+        val noteId = intent.getIntExtra(EXTRA_NOTE_ID, 0)
+        DetailViewModelFactory(database, noteId)
+    }
+
     companion object {
         const val EXTRA_NOTE_ID = "note_id"
 
@@ -27,35 +38,24 @@ class DetailActivity : AppCompatActivity() {
         val binding = ActivityDetailBinding.inflate(layoutInflater).apply {
             setContentView(root)
 
+            btSave.setOnClickListener {
+                val title = etTitle.text.toString()
+                val description = etDescription.text.toString()
+
+                vm.save(title, description)
+                finish()
+            }
+
+
             lifecycleScope.launch {
-                val database = (application as NotesApplication).notesDatabase
-                val note = database.notesDao().getById(intent.getIntExtra(EXTRA_NOTE_ID, -1))
-
-
-
-                if (note != null) {
-                    etTitle.setText(note.title)
-                    etDescription.setText(note.description)
-                }
-                btSave.setOnClickListener {
-                    val title = etTitle.text.toString()
-                    val descripcion = etDescription.text.toString()
-                    lifecycleScope.launch {
-                        if (note != null) {
-                            database.notesDao().update(
-                                note.copy(
-                                    title = title,
-                                    description = descripcion
-                                )
-                            )
-                        } else {
-                            database.notesDao().insert(
-                                Note(0,title = title, description = descripcion)
-                            )
-                        }
-                        finish()
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    vm.state.collect {
+                        etTitle.setText(it.title)
+                        etDescription.setText(it.description)
                     }
                 }
+
+
 
 
             }

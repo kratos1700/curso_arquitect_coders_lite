@@ -12,9 +12,6 @@ abstract class NotesDatabase :RoomDatabase(){
 @Dao
 interface NoteDao{
     //modificado para optimizar con flows
-    /*
-    @Query("SELECT * FROM note")
-    suspend fun getAll() : List<Note> */
     @Query("SELECT * FROM note")
      fun getAll() : Flow<List<Note>>
     @Query("SELECT * FROM note WHERE id = :id")
