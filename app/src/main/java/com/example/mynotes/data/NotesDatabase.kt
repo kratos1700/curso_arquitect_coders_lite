@@ -1,12 +1,13 @@
-package com.example.mynotes
+package com.example.mynotes.data
 
 import androidx.room.*
+import com.example.mynotes.Note
 import kotlinx.coroutines.flow.Flow
 
 
 @Database(entities = [Note::class], version = 1, exportSchema = false)
 abstract class NotesDatabase :RoomDatabase(){
-    abstract fun notesDao():NoteDao
+    abstract fun notesDao(): NoteDao
 }
 
 @Dao

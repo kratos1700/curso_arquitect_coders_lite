@@ -1,4 +1,4 @@
-package com.example.mynotes.main
+package com.example.mynotes.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,9 +7,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.mynotes.NotesApplication
-import com.example.mynotes.NotesDatabase
+import com.example.mynotes.data.NotesRepository
 import com.example.mynotes.databinding.ActivityMainBinding
-import com.example.mynotes.detail.DetailActivity
+import com.example.mynotes.ui.detail.DetailActivity
 import kotlinx.coroutines.launch
 
 
@@ -22,8 +22,10 @@ class MainActivity : AppCompatActivity() {
 
     //creamos una factori para recuperar los datos que le pasamos por parametro
     private val vm by viewModels<MainViewModel>{
+        val notesDatabase =(application as NotesApplication).notesDatabase
+
         MainViewModelFactory(
-            (application as NotesApplication).notesDatabase
+            NotesRepository(notesDatabase.notesDao())
         )
     }
 

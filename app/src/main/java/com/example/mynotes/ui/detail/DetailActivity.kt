@@ -1,16 +1,15 @@
-package com.example.mynotes.detail
+package com.example.mynotes.ui.detail
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.mynotes.Note
 import com.example.mynotes.NotesApplication
+import com.example.mynotes.data.NotesRepository
 import com.example.mynotes.databinding.ActivityDetailBinding
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class DetailActivity : AppCompatActivity() {
@@ -18,7 +17,7 @@ class DetailActivity : AppCompatActivity() {
     private val vm: DetailViewModel by viewModels {
         val database = (application as NotesApplication).notesDatabase
         val noteId = intent.getIntExtra(EXTRA_NOTE_ID, 0)
-        DetailViewModelFactory(database, noteId)
+        DetailViewModelFactory(NotesRepository(database.notesDao()), noteId)
     }
 
     companion object {
