@@ -2,6 +2,7 @@ package com.example.mynotes.data
 
 import com.example.mynotes.Note
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 interface NotesLocalDataSource {
     val currentNotes: Flow<List<Note>>
@@ -13,7 +14,7 @@ interface NotesLocalDataSource {
     suspend fun insert(nota: Note)
 }
 
-class NotesRoomDataSource(private val noteDao: NoteDao) : NotesLocalDataSource {
+class NotesRoomDataSource @Inject constructor(private val noteDao: NoteDao) : NotesLocalDataSource {
 
     override val currentNotes: Flow<List<Note>> = noteDao.getAll()
 

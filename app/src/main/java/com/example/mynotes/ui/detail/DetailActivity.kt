@@ -13,19 +13,12 @@ import com.example.mynotes.data.NotesRepository
 import com.example.mynotes.databinding.ActivityDetailBinding
 import com.example.mynotes.domain.GetByIdUseCase
 import com.example.mynotes.domain.SaveNoteUseCase
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
+@AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
 
-    private val vm: DetailViewModel by viewModels {
-        val database = (application as NotesApplication).notesDatabase
-        val notesRoomDataSource = NotesRoomDataSource(database.notesDao())
-        val noteId = intent.getIntExtra(EXTRA_NOTE_ID, 0)
-        val notesRepository = NotesRepository(notesRoomDataSource)
-        val saveNoteUseCase = SaveNoteUseCase(notesRepository)
-        val getNoteGetByIdUseCase = GetByIdUseCase(notesRepository)
-        DetailViewModelFactory(getNoteGetByIdUseCase,saveNoteUseCase, noteId)
-    }
+    private val vm: DetailViewModel by viewModels ()
 
     companion object {
         const val EXTRA_NOTE_ID = "note_id"

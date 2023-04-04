@@ -2,8 +2,9 @@ package com.example.mynotes.domain
 
 import com.example.mynotes.Note
 import com.example.mynotes.data.NotesRepository
+import javax.inject.Inject
 
-class DeleteNotesUseCase(private val notesRepository: NotesRepository) {
+class DeleteNotesUseCase @Inject constructor(private val notesRepository: NotesRepository) {
 
     suspend operator fun invoke(note:Note){
         notesRepository.delete(note)

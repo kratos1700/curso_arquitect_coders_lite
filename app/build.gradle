@@ -3,6 +3,9 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
 
+    id 'com.google.dagger.hilt.android'
+
+
 }
 
 android {
@@ -49,6 +52,11 @@ dependencies {
     //ROOM
     implementation 'androidx.room:room-ktx:2.5.0'
     annotationProcessor 'androidx.room:room-compiler:2.5.0'
+    //HILT
+   implementation("com.google.dagger:hilt-android:2.45")
+    kapt("com.google.dagger:hilt-android-compiler:2.45")
+
+
     kapt("androidx.room:room-compiler:2.5.0")
 
 

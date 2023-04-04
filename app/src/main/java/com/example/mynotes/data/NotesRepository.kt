@@ -2,8 +2,9 @@ package com.example.mynotes.data
 
 import com.example.mynotes.Note
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class NotesRepository(private val notesDataSource: NotesLocalDataSource) {
+class NotesRepository @Inject constructor(private val notesDataSource: NotesLocalDataSource) {
 
     val currentNotes: Flow<List<Note>> = notesDataSource.currentNotes
 

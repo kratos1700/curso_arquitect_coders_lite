@@ -13,9 +13,10 @@ import com.example.mynotes.databinding.ActivityMainBinding
 import com.example.mynotes.domain.DeleteNotesUseCase
 import com.example.mynotes.domain.GetCurrentNotesUseCase
 import com.example.mynotes.ui.detail.DetailActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -23,14 +24,7 @@ class MainActivity : AppCompatActivity() {
 
 
     //creamos una factori para recuperar los datos que le pasamos por parametro
-    private val vm by viewModels<MainViewModel> {
-        val notesDatabase = (application as NotesApplication).notesDatabase
-        val notesRoomDataSource = NotesRoomDataSource(notesDatabase.notesDao())
-        val notesRepository = NotesRepository(notesRoomDataSource)
-        val getCurrentNotesUseCase = GetCurrentNotesUseCase(notesRepository)
-        val deleteNotesUseCase = DeleteNotesUseCase(notesRepository)
-        MainViewModelFactory(getCurrentNotesUseCase, deleteNotesUseCase)
-    }
+    private val vm by viewModels<MainViewModel> ()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

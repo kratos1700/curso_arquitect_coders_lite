@@ -8,10 +8,13 @@ import com.example.mynotes.data.NotesDatabase
 import com.example.mynotes.data.NotesRepository
 import com.example.mynotes.domain.DeleteNotesUseCase
 import com.example.mynotes.domain.GetCurrentNotesUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 // pasamos por parametro el NotesDatabase
-class MainViewModel(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     getCurrentNotesUseCase: GetCurrentNotesUseCase,
     private val deleteNotesUseCase: DeleteNotesUseCase
 ) : ViewModel() {
@@ -29,6 +32,8 @@ class MainViewModel(
 
 }
 
+/*
+//ANULADO POR DAGER HILT
 @Suppress("UNCHECKED_CAST")
 class MainViewModelFactory(
     private val getCurrentNotesUseCase: GetCurrentNotesUseCase,
@@ -39,4 +44,4 @@ class MainViewModelFactory(
         return MainViewModel(getCurrentNotesUseCase, deleteNotesUseCase) as T
     }
 
-}
+}*/
