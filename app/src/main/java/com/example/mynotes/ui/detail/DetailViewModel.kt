@@ -20,7 +20,8 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     private val getByIdUseCase: GetByIdUseCase,
     private val saveNoteUseCase: SaveNoteUseCase,
-    private val savedStateHandle: SavedStateHandle,
+    private val noteId:Int
+    // private val savedStateHandle: SavedStateHandle,
 
 ) :
     ViewModel() {
@@ -28,7 +29,7 @@ class DetailViewModel @Inject constructor(
     private val _state = MutableStateFlow(Note(0, "", ""))
     val state: StateFlow<Note> = _state.asStateFlow()
 
-    private val noteId = requireNotNull(savedStateHandle.get<Int>(DetailActivity.EXTRA_NOTE_ID))
+    //private val noteId = requireNotNull(savedStateHandle.get<Int>(DetailActivity.EXTRA_NOTE_ID))
     init {
         viewModelScope.launch {
             val note = getByIdUseCase(noteId)
