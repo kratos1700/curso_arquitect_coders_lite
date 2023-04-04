@@ -8,6 +8,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.mynotes.NotesApplication
+import com.example.mynotes.data.NotesRoomDataSource
 import com.example.mynotes.data.NotesRepository
 import com.example.mynotes.databinding.ActivityDetailBinding
 import kotlinx.coroutines.launch
@@ -16,8 +17,9 @@ class DetailActivity : AppCompatActivity() {
 
     private val vm: DetailViewModel by viewModels {
         val database = (application as NotesApplication).notesDatabase
+        val notesRoomDataSource = NotesRoomDataSource(database.notesDao())
         val noteId = intent.getIntExtra(EXTRA_NOTE_ID, 0)
-        DetailViewModelFactory(NotesRepository(database.notesDao()), noteId)
+        DetailViewModelFactory(NotesRepository(notesRoomDataSource), noteId)
     }
 
     companion object {

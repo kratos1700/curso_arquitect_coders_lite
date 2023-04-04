@@ -7,6 +7,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.mynotes.NotesApplication
+import com.example.mynotes.data.NotesRoomDataSource
 import com.example.mynotes.data.NotesRepository
 import com.example.mynotes.databinding.ActivityMainBinding
 import com.example.mynotes.ui.detail.DetailActivity
@@ -23,10 +24,8 @@ class MainActivity : AppCompatActivity() {
     //creamos una factori para recuperar los datos que le pasamos por parametro
     private val vm by viewModels<MainViewModel>{
         val notesDatabase =(application as NotesApplication).notesDatabase
-
-        MainViewModelFactory(
-            NotesRepository(notesDatabase.notesDao())
-        )
+        val notesRoomDataSource = NotesRoomDataSource(notesDatabase.notesDao())
+        MainViewModelFactory(NotesRepository(notesRoomDataSource))
     }
 
 

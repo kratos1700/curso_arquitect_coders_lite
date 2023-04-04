@@ -3,18 +3,18 @@ package com.example.mynotes.data
 import com.example.mynotes.Note
 import kotlinx.coroutines.flow.Flow
 
-class NotesRepository(private val noteDao: NoteDao) {
+class NotesRepository(private val notesDataSource: NotesLocalDataSource) {
 
-    val currentNotes: Flow<List<Note>> = noteDao.getAll()
+    val currentNotes: Flow<List<Note>> = notesDataSource.currentNotes
 
     suspend fun delete(nota: Note) {
-        noteDao.delete(nota)
+        notesDataSource.delete(nota)
     }
 
-    suspend fun getById(noteId: Int): Note? = noteDao.getById(noteId)
+    suspend fun getById(noteId: Int): Note? = notesDataSource.getById(noteId)
 
     suspend fun save(nota: Note) {
-        noteDao.insert(nota)
+        notesDataSource.insert(nota)
     }
 
 
