@@ -6,28 +6,37 @@ import androidx.lifecycle.viewModelScope
 import com.example.mynotes.Note
 import com.example.mynotes.data.NotesDatabase
 import com.example.mynotes.data.NotesRepository
+import com.example.mynotes.domain.DeleteNotesUseCase
+import com.example.mynotes.domain.GetCurrentNotesUseCase
 import kotlinx.coroutines.launch
 
 // pasamos por parametro el NotesDatabase
-class MainViewModel(private val notesRepository: NotesRepository) : ViewModel() {
+class MainViewModel(
+    getCurrentNotesUseCase: GetCurrentNotesUseCase,
+    private val deleteNotesUseCase: DeleteNotesUseCase
+) : ViewModel() {
 
     //necesitamos un estado que represente el estado del UI,
     // si se cambia lo representa
-    val state = notesRepository.currentNotes
+    val state = getCurrentNotesUseCase()
 
     fun onNoteDelete(nota: Note) {
         viewModelScope.launch {
             //eliminamos nota
-            notesRepository.delete(nota)
+            deleteNotesUseCase(nota)
         }
     }
 
 }
 
 @Suppress("UNCHECKED_CAST")
-class MainViewModelFactory(private val notesRepository: NotesRepository) : ViewModelProvider.Factory {
+class MainViewModelFactory(
+    private val getCurrentNotesUseCase: GetCurrentNotesUseCase,
+    private val deleteNotesUseCase: DeleteNotesUseCase
+) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return MainViewModel(notesRepository) as T
+        return MainViewModel(getCurrentNotesUseCase, deleteNotesUseCase) as T
     }
 
 }

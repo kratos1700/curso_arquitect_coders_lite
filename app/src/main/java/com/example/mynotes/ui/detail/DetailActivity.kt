@@ -11,6 +11,8 @@ import com.example.mynotes.NotesApplication
 import com.example.mynotes.data.NotesRoomDataSource
 import com.example.mynotes.data.NotesRepository
 import com.example.mynotes.databinding.ActivityDetailBinding
+import com.example.mynotes.domain.GetByIdUseCase
+import com.example.mynotes.domain.SaveNoteUseCase
 import kotlinx.coroutines.launch
 
 class DetailActivity : AppCompatActivity() {
@@ -19,7 +21,10 @@ class DetailActivity : AppCompatActivity() {
         val database = (application as NotesApplication).notesDatabase
         val notesRoomDataSource = NotesRoomDataSource(database.notesDao())
         val noteId = intent.getIntExtra(EXTRA_NOTE_ID, 0)
-        DetailViewModelFactory(NotesRepository(notesRoomDataSource), noteId)
+        val notesRepository = NotesRepository(notesRoomDataSource)
+        val saveNoteUseCase = SaveNoteUseCase(notesRepository)
+        val getNoteGetByIdUseCase = GetByIdUseCase(notesRepository)
+        DetailViewModelFactory(getNoteGetByIdUseCase,saveNoteUseCase, noteId)
     }
 
     companion object {
@@ -55,8 +60,6 @@ class DetailActivity : AppCompatActivity() {
                         etDescription.setText(it.description)
                     }
                 }
-
-
 
 
             }

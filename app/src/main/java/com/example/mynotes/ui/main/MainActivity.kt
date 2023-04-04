@@ -10,9 +10,10 @@ import com.example.mynotes.NotesApplication
 import com.example.mynotes.data.NotesRoomDataSource
 import com.example.mynotes.data.NotesRepository
 import com.example.mynotes.databinding.ActivityMainBinding
+import com.example.mynotes.domain.DeleteNotesUseCase
+import com.example.mynotes.domain.GetCurrentNotesUseCase
 import com.example.mynotes.ui.detail.DetailActivity
 import kotlinx.coroutines.launch
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,10 +23,13 @@ class MainActivity : AppCompatActivity() {
 
 
     //creamos una factori para recuperar los datos que le pasamos por parametro
-    private val vm by viewModels<MainViewModel>{
-        val notesDatabase =(application as NotesApplication).notesDatabase
+    private val vm by viewModels<MainViewModel> {
+        val notesDatabase = (application as NotesApplication).notesDatabase
         val notesRoomDataSource = NotesRoomDataSource(notesDatabase.notesDao())
-        MainViewModelFactory(NotesRepository(notesRoomDataSource))
+        val notesRepository = NotesRepository(notesRoomDataSource)
+        val getCurrentNotesUseCase = GetCurrentNotesUseCase(notesRepository)
+        val deleteNotesUseCase = DeleteNotesUseCase(notesRepository)
+        MainViewModelFactory(getCurrentNotesUseCase, deleteNotesUseCase)
     }
 
 
@@ -36,7 +40,8 @@ class MainActivity : AppCompatActivity() {
             notesAdapter = NotesAdapter(
                 onNoteClick = { DetailActivity.navigate(this@MainActivity, it.id) },
                 onNoteDelete = {
-                    vm.onNoteDelete(it) }
+                    vm.onNoteDelete(it)
+                }
 
             )
             notesList.adapter = notesAdapter
@@ -45,10 +50,10 @@ class MainActivity : AppCompatActivity() {
                 DetailActivity.navigate(this@MainActivity)
             }
             //observamos los cambios del estado
-            lifecycleScope.launch{
+            lifecycleScope.launch {
                 // para evitar errores especificar cuendo se tiene que suscribir para recuperar datos
-                repeatOnLifecycle(Lifecycle.State.STARTED){
-                    vm.state.collect{
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    vm.state.collect {
                         notesAdapter.submitList(it)
                     }
                 }
@@ -56,7 +61,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
 
 
 }
